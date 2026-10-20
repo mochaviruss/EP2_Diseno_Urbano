@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
 import Login from './components/Login';
 import Header from './components/Header';
+import PortalCliente from './components/PortalCliente';
+import PanelArquitectura from './components/PanelArquitectura';
+import PanelCoordinacion from './components/PanelCoordinacion';
+import PanelDisenoGrafico from './components/PanelDisenoGrafico';
+import PanelEstructural from './components/PanelEstructural';
 import PanelAdmin from './components/PanelAdmin';
-import { initialProjects } from './data/mockData';
+import { initialProjects, initialTasks } from './data/mockData';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [currentRole, setCurrentRole] = useState(null);
-  const [projects, setProjects] = useState(initialProjects);
+  const [projects] = useState(initialProjects);
 
   const handleLogout = () => setCurrentRole(null);
-  const handleReset = () => setProjects(initialProjects);
+  const handleReset = () => window.location.reload();
 
   const getHeaderTitle = (role) => {
     switch (role) {
@@ -37,7 +42,7 @@ function App() {
   };
 
   return (
-    <div className="min-vh-100 bg-light d-flex flex-column">
+    <div className="min-vh-100 bg-light d-flex flex-column justify-content-between">
       {!currentRole ? (
         <Login onSelectRole={setCurrentRole} />
       ) : (
@@ -49,19 +54,18 @@ function App() {
             onReset={handleReset} 
           />
           <main className="container flex-grow-1 pb-5">
+            {currentRole === 'cliente' && <PortalCliente projects={projects} />}
+            {currentRole === 'arquitectura' && <PanelArquitectura projects={projects} onAddPlano={() => {}} />}
+            {currentRole === 'coordinacion' && <PanelCoordinacion initialTasks={initialTasks} />}
+            {currentRole === 'diseno' && <PanelDisenoGrafico />}
+            {currentRole === 'estructural' && <PanelEstructural />}
             {currentRole === 'admin' && <PanelAdmin projects={projects} />}
-            {currentRole !== 'admin' && (
-              <div className="card shadow-sm p-4 border-0 text-center">
-                <h4 className="fw-bold">Vista de {getHeaderTitle(currentRole)}</h4>
-                <p className="text-muted mb-0">Módulo en React listo para integrar.</p>
-              </div>
-            )}
           </main>
-          <footer className="bg-dark text-white text-center py-3 mt-auto">
-            <small>© 2026 Diseño Urbano Team-Panco. Soporte: TeamPanco@ShelterBuildings.com</small>
-          </footer>
         </>
       )}
+      <footer className="bg-dark text-white text-center py-3 mt-auto">
+        <small>© 2026 Diseño Urbano Team-Panco. Soporte: TeamPanco@ShelterBuildings.com</small>
+      </footer>
     </div>
   );
 }
