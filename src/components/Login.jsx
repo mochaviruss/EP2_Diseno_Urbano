@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+import CarruselZoom from './CarruselZoom';
+
+const BANNERS = [
+  { src: '/img/banner1.jpg', titulo: 'Diseñamos espacios para vivir', texto: 'Más de 15 años creando proyectos de arquitectura y urbanismo.' },
+  { src: '/img/banner2.jpg', titulo: 'Sigue tu proyecto en tiempo real', texto: 'Revisa el estado y avance de tus proyectos desde cualquier dispositivo.' },
+  { src: '/img/banner3.jpg', titulo: 'Un solo equipo, todo coordinado', texto: 'Arquitectos, diseñadores e ingenieros trabajando en un mismo lugar.' },
+];
 
 const Login = ({ onSelectRole }) => {
   const [selectedRole, setSelectedRole] = useState('');
@@ -17,14 +24,19 @@ const Login = ({ onSelectRole }) => {
         <p className="text-muted fs-6">Sistema Integrado de Gestión Arquitectónica y Diseño Urbano</p>
       </div>
 
+      <div className="mb-4">
+        <CarruselZoom imagenes={BANNERS} />
+      </div>
+
       <div className="row g-4">
         <div className="col-12 col-lg-6">
           <div className="card shadow-sm h-100 p-3 p-md-4 border-0">
             <span className="text-muted small fw-bold">NR. 01</span>
             <h4 className="fw-bold mb-3 fs-5 fs-md-4">Recorrido Virtual</h4>
             <div className="ratio ratio-16x9 bg-black rounded">
-              <video controls className="w-100">
-                <source src="/recorrido.mp4" type="video/mp4" />
+              <video controls autoPlay muted loop playsInline className="w-100" poster="/img/recorrido-portada.jpg">
+                <source src="/img/recorrido.webm" type="video/webm" />
+                <source src="/img/recorrido.mp4" type="video/mp4" />
                 Tu navegador no soporta la reproducción de video.
               </video>
             </div>
