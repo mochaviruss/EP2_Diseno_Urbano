@@ -1,277 +1,76 @@
-:root {
-  --color-oscuro: #121315;
-  --color-borde: #e5e5e7;
-  --color-gris: #6e6e73;
-  --color-gris-claro: #a0a0a5;
-  --color-fondo-campo: #fafafa;
-  --color-error: #e63946;
-}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: var(--color-oscuro);
-  color: var(--color-oscuro);
+  background-color: #f4f4f5;
+  color: #121315;
 }
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6,
-.navbar-brand {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.5px;
-}
-
-.navbar {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.cabecera {
-  color: #ffffff;
-  padding: 2.5rem 0 4.5rem;
-  background:
-    linear-gradient(180deg, rgba(18, 19, 21, 0.55) 0%, rgba(18, 19, 21, 0.97) 100%),
-    url('/img/banner3.jpg') center / cover no-repeat;
-}
-
-.cabecera-titulo {
-  font-weight: 900;
-  font-size: 1.8rem;
-  letter-spacing: -1px;
-  margin-bottom: 0.25rem;
-}
-
-.cabecera-subtitulo {
-  color: var(--color-gris-claro);
-  font-weight: 300;
-  font-size: 0.95rem;
-}
-
-@media (min-width: 768px) {
-  .cabecera {
-    padding: 3.5rem 0 5rem;
-  }
-
-  .cabecera-titulo {
-    font-size: 2.5rem;
-  }
-}
-
-.contenido {
+.hero-section {
   position: relative;
-  background-color: #ffffff;
-  border-top: 4px solid var(--color-oscuro);
-  margin-top: -2.5rem;
-  padding: 1.5rem 0 3rem;
+  padding: 60px 0 100px 0;
+  background: linear-gradient(180deg, rgba(18, 19, 21, 0.7) 0%, rgba(18, 19, 21, 1) 100%),
+              url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+  color: white;
+  text-align: center;
 }
 
-@media (min-width: 768px) {
-  .contenido {
-    padding: 2.5rem 0 3.5rem;
-  }
+h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  letter-spacing: -1px;
 }
 
 .tarjeta-panel {
-  background-color: #ffffff;
-  border: 1px solid var(--color-borde);
-  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid #e5e5e7;
+  border-radius: 12px;
+  padding: 30px;
+  height: 100%;
 }
 
-@media (min-width: 768px) {
-  .tarjeta-panel {
-    padding: 1.75rem;
-  }
+.tarjeta-panel h2 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  border-bottom: 2px solid #f4f4f5;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
 }
 
 .numero-tarjeta {
-  display: block;
   font-family: 'Montserrat', sans-serif;
   font-size: 0.8rem;
   font-weight: 800;
-  letter-spacing: 2px;
   color: #8e8e93;
-  margin-bottom: 0.4rem;
-}
-
-.tarjeta-panel-encabezado {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.75rem;
-  border-bottom: 1px solid var(--color-borde);
-  padding-bottom: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.tarjeta-panel-encabezado h2 {
-  font-size: 1.35rem;
-  margin: 0;
-}
-
-.form-label,
-.tarjeta-panel legend {
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--color-gris);
-}
-
-.form-control,
-.form-select {
-  background-color: var(--color-fondo-campo);
-  border-color: #d2d2d7;
-  border-radius: 0;
-}
-
-.form-control:focus,
-.form-select:focus {
-  background-color: #ffffff;
-  border-color: var(--color-oscuro);
-  box-shadow: 0 0 0 0.2rem rgba(18, 19, 21, 0.15);
-}
-
-.btn {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  border-radius: 0;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-sm {
-  min-height: 34px;
-  font-size: 0.7rem;
-}
-
-.btn-lg {
-  font-size: 0.9rem;
-}
-
-.boton-responsivo {
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  .boton-responsivo {
-    width: auto;
-  }
-}
-
-.table thead th {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.72rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--color-gris);
-  background-color: var(--color-fondo-campo);
-  border-bottom: 2px solid var(--color-oscuro);
-}
-
-.card {
-  border-radius: 0;
-}
-
-.carrusel-inicio img {
-  height: 45vh;
-  max-height: 420px;
-  min-height: 220px;
-  object-fit: cover;
-}
-
-.boton-imagen {
+  letter-spacing: 2px;
   display: block;
-  width: 100%;
-  padding: 0;
-  border: 0;
-  background: none;
-  cursor: zoom-in;
+  margin-bottom: 5px;
 }
 
-.leyenda-carrusel {
-  background-color: rgba(0, 0, 0, 0.55);
-  padding: 0.75rem 1rem;
+.carrusel-top-container {
+  max-width: 800px;
+  margin: -60px auto 40px auto;
+  position: relative;
+  z-index: 10;
 }
 
-.leyenda-carrusel h2 {
-  font-size: 1.1rem;
-  margin-bottom: 0.25rem;
-}
-
-@media (min-width: 768px) {
-  .leyenda-carrusel h2 {
-    font-size: 1.6rem;
-  }
-}
-
-.imagen-zoom {
-  display: block;
-  width: 100%;
-  max-height: 80vh;
-  object-fit: contain;
-  background-color: #000000;
-}
-
-.video-recorrido {
-  display: block;
-  width: 100%;
-  border: 1px solid var(--color-borde);
-  border-radius: 8px;
-}
-
-.imagen-proyecto,
-.imagen-vacia {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.imagen-vacia {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f4f4f5;
-  border: 1px dashed #d1d1d6;
-  color: var(--color-gris-claro);
-  font-size: 0.85rem;
-}
-
-.imagen-detalle {
-  height: 320px;
-}
-
-.texto-corto {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
+.carrusel-wrapper {
   overflow: hidden;
+  border-radius: 12px;
 }
 
-.menu-admin {
-  flex-wrap: wrap;
+.carrusel-track {
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
-.menu-admin .nav-link {
-  border-radius: 0;
-  color: var(--color-oscuro);
-}
-
-.menu-admin .nav-link.active {
-  background-color: var(--color-oscuro);
-}
-
-.pie-pagina {
-  background-color: var(--color-oscuro);
-  color: var(--color-gris-claro);
-}
-
-.pie-pagina h2 {
-  color: #ffffff;
+.carrusel-track img {
+  width: 70%;
+  min-width: 70%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
