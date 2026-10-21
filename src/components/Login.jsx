@@ -9,12 +9,21 @@ const BANNERS = [
 
 const Login = ({ onSelectRole }) => {
   const [selectedRole, setSelectedRole] = useState('');
+  const [error, setError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (selectedRole) {
-      onSelectRole(selectedRole);
+    if (!selectedRole) {
+      setError('Debe seleccionar un perfil para acceder al sistema.');
+      return;
     }
+    setError('');
+    onSelectRole(selectedRole);
+  };
+
+  const handleReset = () => {
+    setSelectedRole('');
+    setError('');
   };
 
   return (
@@ -48,14 +57,18 @@ const Login = ({ onSelectRole }) => {
             <span className="text-muted small fw-bold">NR. 02</span>
             <h4 className="fw-bold mb-3 fs-5 fs-md-4">Acceso al Sistema</h4>
             
+            {error && <div className="alert alert-danger py-2 small mb-3">{error}</div>}
+
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="form-label small fw-bold text-uppercase text-muted">Seleccionar Perfil / Rol</label>
                 <select 
                   className="form-select form-select-lg fs-6" 
                   value={selectedRole} 
-                  onChange={(e) => setSelectedRole(e.target.value)}
-                  required
+                  onChange={(e) => {
+                    setSelectedRole(e.target.value);
+                    if (error) setError('');
+                  }}
                 >
                   <option value="">-- Seleccione su Perfil --</option>
                   <option value="cliente">Cliente</option>
@@ -69,7 +82,7 @@ const Login = ({ onSelectRole }) => {
 
               <div className="d-flex flex-column flex-sm-row gap-2">
                 <button type="submit" className="btn btn-dark w-100 fw-bold py-2">INGRESAR</button>
-                <button type="button" className="btn btn-outline-secondary w-100 fw-bold py-2" onClick={() => setSelectedRole('')}>LIMPIAR</button>
+                <button type="button" className="btn btn-outline-secondary w-100 fw-bold py-2" onClick={handleReset}>LIMPIAR</button>
               </div>
             </form>
           </div>

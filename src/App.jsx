@@ -7,7 +7,7 @@ import PanelCoordinacion from './components/PanelCoordinacion';
 import PanelDisenoGrafico from './components/PanelDisenoGrafico';
 import PanelEstructural from './components/PanelEstructural';
 import PanelAdmin from './components/PanelAdmin';
-import { initialProjects, initialTasks } from './data/mockData';
+import { initialProjects } from './data/mockData';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
   };
 
   return (
-    <div className="min-vh-100 bg-light d-flex flex-column justify-content-between">
+    <div className="w-100 min-vh-100 bg-light d-flex flex-column justify-content-between m-0 p-0">
       {!currentRole ? (
         <Login onSelectRole={setCurrentRole} />
       ) : (
@@ -53,17 +53,17 @@ function App() {
             onLogout={handleLogout} 
             onReset={handleReset} 
           />
-          <main className="container flex-grow-1 pb-5">
+          <main className="container-fluid w-100 px-3 px-md-5 flex-grow-1 my-4 pb-5">
             {currentRole === 'cliente' && <PortalCliente projects={projects} />}
             {currentRole === 'arquitectura' && <PanelArquitectura projects={projects} onAddPlano={() => {}} />}
-            {currentRole === 'coordinacion' && <PanelCoordinacion initialTasks={initialTasks} />}
-            {currentRole === 'diseno' && <PanelDisenoGrafico />}
-            {currentRole === 'estructural' && <PanelEstructural />}
+            {currentRole === 'coordinacion' && <PanelCoordinacion projects={projects} />}
+            {currentRole === 'diseno' && <PanelDisenoGrafico projects={projects} />}
+            {currentRole === 'estructural' && <PanelEstructural projects={projects} />}
             {currentRole === 'admin' && <PanelAdmin projects={projects} />}
           </main>
         </>
       )}
-      <footer className="bg-dark text-white text-center py-3 mt-auto">
+      <footer className="bg-dark text-white text-center py-3 mt-auto w-100">
         <small>© 2026 Diseño Urbano Team-Panco. Soporte: TeamPanco@ShelterBuildings.com</small>
       </footer>
     </div>

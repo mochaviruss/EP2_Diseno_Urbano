@@ -1,59 +1,59 @@
 import React, { useState } from 'react';
 
-const PanelEstructural = () => {
-  const [falla, setFalla] = useState('');
-  const [conformidad, setConformidad] = useState(false);
+const PanelEstructural = ({ projects = [] }) => {
+  const [selectedProject, setSelectedProject] = useState('');
+  const [calcReport, setCalcReport] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!selectedProject || !calcReport) {
+      alert('Por favor complete la información técnica.');
+      return;
+    }
+    alert(`Memoria de cálculo cargada para la revisión del proyecto.`);
+    setCalcReport('');
+  };
 
   return (
-    <div className="row g-4">
-      <div className="col-12 col-lg-6">
-        <div className="card shadow-sm p-3 p-md-4 border-0 h-100">
-          <span className="text-muted small fw-bold">NR. 01</span>
-          <h4 className="fw-bold mb-3 fs-5 fs-md-4">Planos Recibidos (Aprobados)</h4>
-          
-          <div className="d-flex justify-content-between align-items-center bg-light p-3 rounded mb-4">
-            <span className="fw-semibold small">Plano_Arquitectura_V2.dwg</span>
-            <button className="btn btn-dark btn-sm fw-bold">DESCARGAR</button>
+    <div className="card shadow-sm p-3 p-md-4 border-0">
+      <span className="text-muted small fw-bold">NR. 05</span>
+      <h3 className="fw-bold mb-4 fs-4 fs-md-3">Panel Estructural</h3>
+
+      {projects && projects.length > 0 ? (
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label small fw-bold text-muted text-uppercase">Proyecto</label>
+            <select
+              className="form-select"
+              value={selectedProject}
+              onChange={(e) => setSelectedProject(e.target.value)}
+            >
+              <option value="">-- Seleccione un Proyecto --</option>
+              {projects.map((p) => (
+                <option key={p.id} value={p.id}>{p.name}</option>
+              ))}
+            </select>
           </div>
 
-          <h5 className="fw-bold small text-uppercase mb-2">Reportar Fallas en Planos</h5>
-          <textarea className="form-control mb-1" rows="3" placeholder="Detalle la falla estructural..." value={falla} onChange={(e) => setFalla(e.target.value)} />
-          <span className="text-danger small d-block mb-3">Mínimo 20 caracteres obligatorios.</span>
-          <button className="btn btn-outline-secondary w-100 fw-bold btn-sm">SOLICITAR REVISIÓN / REPORTAR FALLA</button>
-        </div>
-      </div>
+          <div className="mb-3">
+            <label className="form-label small fw-bold text-muted text-uppercase">Memoria de Cargas / Observación Técnica</label>
+            <textarea
+              className="form-control"
+              rows="3"
+              placeholder="Detalle los coeficientes sísmicos o especificaciones del hormigón/acero..."
+              value={calcReport}
+              onChange={(e) => setCalcReport(e.target.value)}
+            />
+          </div>
 
-      <div className="col-12 col-lg-6">
-        <div className="card shadow-sm p-3 p-md-4 border-0 h-100">
-          <span className="text-muted small fw-bold">NR. 02</span>
-          <h4 className="fw-bold mb-3 fs-5 fs-md-4">Entrega de Cálculos y Diseño</h4>
-          <form onSubmit={(e) => e.preventDefault()}>
-            <div className="mb-3">
-              <label className="form-label small fw-bold text-muted text-uppercase">RECEPTOR</label>
-              <select className="form-select">
-                <option value="">-- Seleccione --</option>
-                <option value="1">Jefe de Obra</option>
-              </select>
-            </div>
-            <div className="mb-3">
-              <label className="form-label small fw-bold text-muted text-uppercase">VERSIÓN DE CÁLCULO</label>
-              <input type="text" className="form-control" placeholder="Ej: V1, Final" />
-            </div>
-            <div className="mb-3">
-              <label className="form-label small fw-bold text-muted text-uppercase">ADJUNTAR MEMORIA (.PDF, .DWG, .ZIP)</label>
-              <input type="file" className="form-control" />
-            </div>
-            <div className="form-check mb-2">
-              <input className="form-check-input" type="checkbox" id="checkConf" checked={conformidad} onChange={(e) => setConformidad(e.target.checked)} />
-              <label className="form-check-label small" htmlFor="checkConf">
-                Certifico la conformidad técnica y normativa.
-              </label>
-            </div>
-            <span className="text-danger small d-block mb-3">Debe marcar la casilla de conformidad.</span>
-            <button type="submit" className="btn btn-dark w-100 fw-bold">ENVIAR DISEÑO ESTRUCTURAL</button>
-          </form>
+          <button type="submit" className="btn btn-dark fw-bold w-100 py-2">REGISTRAR INFORME TÉCNICO</button>
+        </form>
+      ) : (
+        <div className="alert alert-info text-center py-4 my-3" role="alert">
+          <h5 className="fw-bold mb-1">Sin revisiones pendientes</h5>
+          <p className="small mb-0 text-muted">No existen proyectos que requieran cálculo de estructuras en este momento.</p>
         </div>
-      </div>
+      )}
     </div>
   );
 };
