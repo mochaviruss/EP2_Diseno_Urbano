@@ -3,6 +3,7 @@ import NavigationBar from './components/Navbar';
 import Home from './pages/Home';
 import Admin from './pages/Admin';
 import Categorias from './pages/Categorias';
+import DetalleProyecto from './pages/DetalleProyecto';
 import Checkout from './pages/Checkout';
 import Cliente from './pages/Cliente';
 import Arquitecto from './pages/Arquitecto';
@@ -19,6 +20,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/categorias" element={<Categorias />} />
+          <Route path="/proyectos/:codigo" element={<DetalleProyecto />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/cliente" element={<Cliente />} />
           <Route path="/arquitecto" element={<Arquitecto />} />

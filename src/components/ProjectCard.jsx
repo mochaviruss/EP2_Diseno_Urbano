@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 const ProjectCard = ({ project }) => {
   return (
     <div className="tarjeta-panel h-100 d-flex flex-column shadow-sm">
@@ -13,7 +15,7 @@ const ProjectCard = ({ project }) => {
         <p className="mb-1"><strong>Costo Estimado:</strong> {project.estimatedCost}</p>
       </div>
       <div className="mt-3">
-        <button className="btn btn-dark boton-responsivo">Ver Detalles</button>
+        <Link to={`/proyectos/${project.code}`} className="btn btn-dark boton-responsivo">Ver Detalles</Link>
       </div>
     </div>
   );
