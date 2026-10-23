@@ -9,8 +9,8 @@
 
 /* Reset total de márgenes y ancho horizontal al 100% */
 html, body, #root {
-  width: 100vw !important;
-  max-width: 100vw !important;
+  width: 100% !important;
+  max-width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow-x: hidden;

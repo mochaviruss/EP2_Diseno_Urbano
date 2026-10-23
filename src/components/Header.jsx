@@ -10,7 +10,7 @@ const Header = ({ title, subtitle, onLogout, onReset }) => {
             <span className="fw-bold fs-4 tracking-wide">{title || 'EP2 - Portal de Proyectos'}</span>
           </div>
           {subtitle && (
-            <p className="text-muted small mb-0 mt-1 d-none d-sm-block">{subtitle}</p>
+            <p className="text-white-50 small mb-0 mt-1 d-none d-sm-block">{subtitle}</p>
           )}
         </div>
 

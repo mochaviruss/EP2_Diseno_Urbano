@@ -1,26 +1,31 @@
 import React from 'react';
 
-const PanelAdmin = ({ projects = [] }) => {
+const PanelAdmin = ({ projects = [], onEditar, onEliminar }) => {
+  const entregados = projects.filter((p) => p.status === 'ENTREGADO').length;
+  const avancePromedio = projects.length
+    ? Math.round(projects.reduce((suma, p) => suma + Number(p.progress), 0) / projects.length)
+    : 0;
+
   return (
     <div className="card shadow-sm p-3 p-md-4 border-0">
       {/* Tarjetas de Métricas / KPIs */}
       <div className="row g-3 mb-4">
         <div className="col-12 col-sm-4">
           <div className="card bg-dark text-white p-3 border-0 rounded text-center">
-            <span className="small text-uppercase text-muted">Total Proyectos</span>
+            <span className="small text-uppercase">Total Proyectos</span>
             <h3 className="fw-bold mb-0">{projects?.length || 0}</h3>
           </div>
         </div>
         <div className="col-12 col-sm-4">
           <div className="card bg-success text-white p-3 border-0 rounded text-center">
-            <span className="small text-uppercase">En Regla</span>
-            <h3 className="fw-bold mb-0">100%</h3>
+            <span className="small text-uppercase">Entregados</span>
+            <h3 className="fw-bold mb-0">{entregados}</h3>
           </div>
         </div>
         <div className="col-12 col-sm-4">
           <div className="card bg-secondary text-white p-3 border-0 rounded text-center">
-            <span className="small text-uppercase">Pruebas Pasadas</span>
-            <h3 className="fw-bold mb-0">10 / 10</h3>
+            <span className="small text-uppercase">Avance Promedio</span>
+            <h3 className="fw-bold mb-0">{avancePromedio}%</h3>
           </div>
         </div>
       </div>
@@ -50,6 +55,7 @@ const PanelAdmin = ({ projects = [] }) => {
                 <th>AVANCE</th>
                 <th>COSTO ESTIMADO</th>
                 <th>ESTADO</th>
+                {onEliminar && <th>ACCIONES</th>}
               </tr>
             </thead>
             <tbody>
@@ -64,6 +70,14 @@ const PanelAdmin = ({ projects = [] }) => {
                       {p.status}
                     </span>
                   </td>
+                  {onEliminar && (
+                    <td>
+                      <div className="d-flex gap-2">
+                        <button className="btn btn-warning btn-sm" onClick={() => onEditar(p)}>Editar</button>
+                        <button className="btn btn-danger btn-sm" onClick={() => onEliminar(p.id)}>Eliminar</button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

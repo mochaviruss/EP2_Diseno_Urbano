@@ -1,11 +1,12 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 import App from '../App';
 import Header from '../components/Header';
 import Login from '../components/Login';
 import PanelAdmin from '../components/PanelAdmin';
-import { initialProjects } from '../data/mockData';
+import { initialProjects } from '../data/db';
 
 describe('Pruebas Unitarias - Portal de Proyectos', () => {
 
@@ -27,11 +28,11 @@ describe('Pruebas Unitarias - Portal de Proyectos', () => {
     expect(screen.getByText('Panel de prueba')).toBeInTheDocument();
   });
 
-  // Test 4: Verificar el botón de volver al login en el Header
-  it('4. Debe llamar a la función onLogout al hacer clic en VOLVER AL LOGIN', () => {
+  // Test 4: Verificar el botón de cerrar sesión en el Header
+  it('4. Debe llamar a la función onLogout al hacer clic en CERRAR SESIÓN', () => {
     const handleLogout = vi.fn();
     render(<Header title="Test" onLogout={handleLogout} />);
-    const btnLogout = screen.getByText('← VOLVER AL LOGIN');
+    const btnLogout = screen.getByText('CERRAR SESIÓN');
     fireEvent.click(btnLogout);
     expect(handleLogout).toHaveBeenCalledTimes(1);
   });
@@ -50,7 +51,7 @@ describe('Pruebas Unitarias - Portal de Proyectos', () => {
 
   // Test 7: Verificar el cambio de vista al seleccionar un rol en la App
   it('7. Debe cambiar la vista de Login al panel al seleccionar un rol', () => {
-    render(<App />);
+    render(<MemoryRouter><App /></MemoryRouter>);
     const select = screen.getByRole('combobox');
     fireEvent.change(select, { target: { value: 'admin' } });
     const btnIngresar = screen.getByText('INGRESAR');
@@ -76,7 +77,7 @@ describe('Pruebas Unitarias - Portal de Proyectos', () => {
 
   // Test 10: Verificar que la aplicación renderice el pie de página
  it('10. Debe renderizar el footer con la información del equipo', () => {
-    render(<App />);
+    render(<MemoryRouter><App /></MemoryRouter>);
     const select = screen.getByRole('combobox');
     fireEvent.change(select, { target: { value: 'admin' } });
     const btnIngresar = screen.getByText('INGRESAR');
