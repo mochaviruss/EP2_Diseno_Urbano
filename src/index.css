@@ -6,8 +6,6 @@
   --color-fondo-campo: #fafafa;
   --color-error: #e63946;
 }
-
-/* Reset total de márgenes y ancho horizontal al 100% */
 html, body, #root {
   width: 100% !important;
   max-width: 100% !important;
@@ -16,7 +14,7 @@ html, body, #root {
   overflow-x: hidden;
 }
 
-/* Forzar que cualquier container dentro de la app use el 100% */
+
 .container, .container-lg, .container-md, .container-sm, .container-xl {
   max-width: 100% !important;
   width: 100% !important;
@@ -46,6 +44,8 @@ h1, h2, h3, h4, h5, h6,
   background:
     linear-gradient(180deg, rgba(18, 19, 21, 0.55) 0%, rgba(18, 19, 21, 0.97) 100%),
     url('/img/banner3.jpg') center / cover no-repeat;
+
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
 .cabecera-titulo {
@@ -77,6 +77,8 @@ h1, h2, h3, h4, h5, h6,
   border-top: 4px solid var(--color-oscuro);
   margin-top: -2.5rem;
   padding: 1.5rem 0 3rem;
+
+  animation: fadeInUp 0.5s ease-out forwards;
 }
 
 @media (min-width: 768px) {
@@ -89,6 +91,14 @@ h1, h2, h3, h4, h5, h6,
   background-color: #ffffff;
   border: 1px solid var(--color-borde);
   padding: 1.25rem;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+
+.tarjeta-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 @media (min-width: 768px) {
@@ -137,6 +147,8 @@ h1, h2, h3, h4, h5, h6,
   background-color: var(--color-fondo-campo);
   border-color: #d2d2d7;
   border-radius: 0;
+
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form-control:focus,
@@ -157,6 +169,16 @@ h1, h2, h3, h4, h5, h6,
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .btn-sm {
@@ -189,8 +211,25 @@ h1, h2, h3, h4, h5, h6,
   border-bottom: 2px solid var(--color-oscuro);
 }
 
+
+.table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
 .card {
   border-radius: 0;
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  animation: fadeInUp 0.4s ease-out forwards;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
 }
 
 .carrusel-inicio img {
@@ -198,6 +237,7 @@ h1, h2, h3, h4, h5, h6,
   max-height: 420px;
   min-height: 220px;
   object-fit: cover;
+  transition: transform 0.5s ease;
 }
 
 .boton-imagen {
@@ -207,11 +247,17 @@ h1, h2, h3, h4, h5, h6,
   border: 0;
   background: none;
   cursor: zoom-in;
+  overflow: hidden;
+}
+
+.boton-imagen:hover img {
+  transform: scale(1.02);
 }
 
 .leyenda-carrusel {
   background-color: rgba(0, 0, 0, 0.55);
   padding: 0.75rem 1rem;
+  backdrop-filter: blur(4px);
 }
 
 .leyenda-carrusel h2 {
@@ -276,6 +322,7 @@ h1, h2, h3, h4, h5, h6,
 .menu-admin .nav-link {
   border-radius: 0;
   color: var(--color-oscuro);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .menu-admin .nav-link.active {
@@ -289,4 +336,33 @@ h1, h2, h3, h4, h5, h6,
 
 .pie-pagina h2 {
   color: #ffffff;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.anim-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.anim-fade-up {
+  animation: fadeInUp 0.4s ease-out forwards;
 }
