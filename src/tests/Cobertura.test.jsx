@@ -1,7 +1,7 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 import CarruselZoom from '../components/CarruselZoom';
 import Header from '../components/Header';
@@ -30,6 +30,7 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
   beforeEach(() => {
     vi.spyOn(window, 'alert').mockImplementation(() => {});
     vi.spyOn(window, 'confirm').mockImplementation(() => true);
+    window.scrollTo = vi.fn();
   });
 
   // 1. Base de datos (src/data/db.js -> 100%)
@@ -59,7 +60,7 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
   });
 
   // 2. CarruselZoom (src/components/CarruselZoom.jsx -> 100%)
-  it('2. Abre y cierra el modal de zoom en CarruselZoom', () => {
+  it('2. Abre y cierra el modal de zoom en CarruselZoom', async () => {
     const imagenes = [{ src: '/img/banner1.jpg', titulo: 'Banner Test', texto: 'Texto Test' }];
     render(<CarruselZoom imagenes={imagenes} />);
 
@@ -68,6 +69,7 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
     expect(screen.getByText('Cerrar')).toBeInTheDocument();
 
     fireEvent.click(screen.getByText('Cerrar'));
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
   });
 
   // 3. Header, Login, NotificationToast y PaginaRol (-> 100%)
@@ -75,7 +77,10 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
     const onReset = vi.fn();
     const onClose = vi.fn();
     render(
-      <MemoryRouter>
+      <MemoryRouter initialEntries={['/panel']}>
+        <Routes>
+          <Route path="/" element={<p>Página de inicio</p>} />
+          <Route path="/panel" element={<>
         <Header onReset={onReset} />
         <Login onSelectRole={() => {}} />
         <NotificationToast message="" />
@@ -84,6 +89,8 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
         <PaginaRol titulo="Rol Test" subtitulo="Sub Test">
           <span>Contenido Hijo</span>
         </PaginaRol>
+          </>} />
+        </Routes>
       </MemoryRouter>
     );
 
@@ -94,11 +101,14 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
     fireEvent.click(screen.getByText('INGRESAR'));
     expect(screen.getByText('Debe seleccionar un perfil para acceder al sistema.')).toBeInTheDocument();
     fireEvent.change(screen.getByRole('combobox'), { target: { value: 'cliente' } });
+    expect(screen.queryByText('Debe seleccionar un perfil para acceder al sistema.')).not.toBeInTheDocument();
 
     // Cerrar toast y cerrar sesión en PaginaRol
     fireEvent.click(screen.getAllByLabelText('Close')[0]);
     expect(onClose).toHaveBeenCalled();
+    expect(screen.getByText('Contenido Hijo')).toBeInTheDocument();
     fireEvent.click(screen.getByText('CERRAR SESIÓN'));
+    expect(screen.getByText('Página de inicio')).toBeInTheDocument();
   });
 
   // 4. PanelAdmin y PanelCoordinacion (-> 100%)
@@ -110,6 +120,7 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
     );
 
     fireEvent.click(screen.getByText('EXPORTAR A EXCEL'));
+    expect(window.alert).toHaveBeenCalledWith('Exportando consolidado de proyectos a Excel...');
     fireEvent.click(screen.getAllByText('Editar')[0]);
     expect(onEditar).toHaveBeenCalled();
     fireEvent.click(screen.getAllByText('Eliminar')[0]);
@@ -138,9 +149,13 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
 
     // Envío vacio y envío completo en Diseño Grafico
     fireEvent.click(screen.getByText('SUBIR RECURSO VISUAL'));
+    expect(window.alert).toHaveBeenCalledWith('Por favor complete todos los campos obligatorios.');
     fireEvent.change(screen.getByRole('combobox'), { target: { value: initialProjects[0].id } });
     fireEvent.change(screen.getByPlaceholderText(/Vista Axonométrica/i), { target: { value: 'Render Fachada' } });
     fireEvent.click(screen.getByText('SUBIR RECURSO VISUAL'));
+    expect(window.alert).toHaveBeenCalledWith('Render "Render Fachada" asignado correctamente al proyecto.');
+    expect(screen.getByPlaceholderText(/Vista Axonométrica/i)).toHaveValue('');
+    expect(screen.getByText('Sin solicitudes de diseño')).toBeInTheDocument();
     unmount();
 
     render(
@@ -152,9 +167,13 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
 
     // Envio vacio y envio completo en Panel Estructural
     fireEvent.click(screen.getByText('REGISTRAR INFORME TÉCNICO'));
+    expect(window.alert).toHaveBeenCalledWith('Por favor complete la información técnica.');
     fireEvent.change(screen.getByRole('combobox'), { target: { value: initialProjects[0].id } });
     fireEvent.change(screen.getByPlaceholderText(/Detalle los coeficientes/i), { target: { value: 'Memoria Sísmica OK' } });
     fireEvent.click(screen.getByText('REGISTRAR INFORME TÉCNICO'));
+    expect(window.alert).toHaveBeenCalledWith('Memoria de cálculo cargada para la revisión del proyecto.');
+    expect(screen.getByPlaceholderText(/Detalle los coeficientes/i)).toHaveValue('');
+    expect(screen.getByText('Sin revisiones pendientes')).toBeInTheDocument();
   });
 
   // 6. PortalCliente (-> 100%)
@@ -163,9 +182,12 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
 
     const textareas = screen.getAllByPlaceholderText('Escribe aquí tus observaciones...');
     fireEvent.change(textareas[0], { target: { value: 'Observación del cliente' } });
+    expect(textareas[0]).toHaveValue('Observación del cliente');
 
     fireEvent.click(screen.getAllByText('APROBAR ENTREGABLE')[0]);
+    expect(window.alert).toHaveBeenCalledWith(`Entregable para "${initialProjects[0].name}" aprobado exitosamente.`);
     fireEvent.click(screen.getAllByText('ENVIAR APELACIÓN')[0]);
+    expect(window.alert).toHaveBeenCalledWith(`Apelación enviada para "${initialProjects[0].name}".`);
 
     const buscador = screen.getByPlaceholderText(/Buscar proyecto por nombre/i);
     fireEvent.change(buscador, { target: { value: 'TERMINO_SIN_RESULTADOS_999' } });
@@ -186,10 +208,16 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
       </MemoryRouter>
     );
 
+    const tarjetas = () => screen.getAllByRole('link', { name: 'Ver Detalles' }).length;
     fireEvent.click(screen.getByRole('button', { name: 'Planificados' }));
+    expect(tarjetas()).toBe(2);
     fireEvent.click(screen.getByRole('button', { name: 'En Curso' }));
+    expect(screen.getByText('No hay proyectos en esta categoria.')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Entregados' }));
+    expect(tarjetas()).toBe(2);
     fireEvent.click(screen.getByRole('button', { name: 'Todos' }));
+    expect(tarjetas()).toBe(initialProjects.length + 1);
+    expect(screen.getByText('Portal del Cliente')).toBeInTheDocument();
     expect(screen.getByText('No hay un pago para mostrar.')).toBeInTheDocument();
   });
 
@@ -213,10 +241,8 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
     fireEvent.click(btnGuardarPlano);
     expect(screen.getByText(/Plano registrado exitosamente/i)).toBeInTheDocument();
 
-    const btnCancelar = screen.queryByRole('button', { name: /Cancelar|Marcar Tarea/i });
-    if (btnCancelar) {
-      fireEvent.click(btnCancelar);
-    }
+    fireEvent.click(screen.getByRole('button', { name: /Marcar Tarea/i }));
+    expect(window.alert).toHaveBeenCalledWith("Marcado 'En Revision'.");
   });
 
   // 9. Pagina Admin.jsx (-> 95%+)
@@ -242,18 +268,25 @@ describe('Pruebas de Cobertura Completa (+85%) - Componentes, Páginas y Datos',
     fireEvent.change(screen.getByLabelText('Avance (%)'), { target: { value: '50' } });
     fireEvent.change(screen.getByLabelText('Costo Estimado'), { target: { value: '1000000' } });
     fireEvent.click(screen.getByText('Guardar Proyecto'));
+    expect(screen.getByText('Torre Mirador Sur')).toBeInTheDocument();
+    expect(screen.getByText('Proyecto agregado con exito.')).toBeInTheDocument();
 
     // 3) Editar un proyecto existente y actualizarlo
     fireEvent.click(screen.getAllByText('Editar')[0]);
     fireEvent.change(screen.getByLabelText('Nombre del Proyecto'), { target: { value: 'Proyecto Editado OK' } });
     fireEvent.click(screen.getByText('Actualizar Proyecto'));
+    expect(screen.getByText('Proyecto Editado OK')).toBeInTheDocument();
 
     // 4) Abrir modo edición y probar el botón Cancelar
     fireEvent.click(screen.getAllByText('Editar')[0]);
+    expect(window.scrollTo).toHaveBeenCalled();
     fireEvent.click(screen.getByText('Cancelar'));
+    expect(screen.getByText('Guardar Proyecto')).toBeInTheDocument();
 
     // 5) Eliminar el proyecto recien creado
     const botonesEliminar = screen.getAllByText('Eliminar');
     fireEvent.click(botonesEliminar[botonesEliminar.length - 1]);
+    expect(window.confirm).toHaveBeenCalled();
+    expect(screen.queryByText('Torre Mirador Sur')).not.toBeInTheDocument();
   });
 });
