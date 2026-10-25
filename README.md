@@ -37,5 +37,5 @@ En la EC2 de AWS se usa `npm run dev -- --host` y se abre `http://IP-PUBLICA:517
 ## Equipo
 
 - Ian Villalobos
-- Emanuel
-- Dani Alday
+- Emanuel Castillo
+- Daniel Alday
