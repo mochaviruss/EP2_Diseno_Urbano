@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const Checkout = () => {
   const [formData, setFormData] = useState({ nombre: '', correo: '', calle: '', comuna: '' });
-  const [pagoExitoso, setPagoExitoso] = useState(null);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -11,10 +12,10 @@ const Checkout = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formData.nombre && formData.calle) {
-      setPagoExitoso(true);
+    if (formData.nombre.trim() && /\S+@\S+\.\S+/.test(formData.correo) && formData.calle.trim() && formData.comuna.trim()) {
+      navigate('/checkout/exito', { state: formData });
     } else {
-      setPagoExitoso(false);
+      navigate('/checkout/error', { state: formData });
     }
   };
 
@@ -24,8 +25,6 @@ const Checkout = () => {
         <div className="tarjeta-panel-encabezado">
           <h2>Checkout - Pagar Adelanto</h2>
         </div>
-        {pagoExitoso === true && <Alert variant="success">Pago exitoso. Orden generada.</Alert>}
-        {pagoExitoso === false && <Alert variant="danger">Error en el pago. Revisa tus datos.</Alert>}
 
         <Form onSubmit={handleSubmit}>
           <Row className="mb-3">

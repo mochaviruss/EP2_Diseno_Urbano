@@ -5,6 +5,7 @@ import Admin from './pages/Admin';
 import Categorias from './pages/Categorias';
 import DetalleProyecto from './pages/DetalleProyecto';
 import Checkout from './pages/Checkout';
+import ResultadoCompra from './pages/ResultadoCompra';
 import Cliente from './pages/Cliente';
 import Arquitecto from './pages/Arquitecto';
 import Coordinador from './pages/Coordinador';
@@ -22,6 +23,8 @@ function App() {
           <Route path="/categorias" element={<Categorias />} />
           <Route path="/proyectos/:codigo" element={<DetalleProyecto />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout/exito" element={<ResultadoCompra exito={true} />} />
+          <Route path="/checkout/error" element={<ResultadoCompra exito={false} />} />
           <Route path="/cliente" element={<Cliente />} />
           <Route path="/arquitecto" element={<Arquitecto />} />
           <Route path="/coordinador" element={<Coordinador />} />
