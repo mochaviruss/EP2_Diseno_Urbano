@@ -1,8 +1,8 @@
-import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Form, Row, Col, Alert } from 'react-bootstrap';
 import PaginaRol from '../components/PaginaRol';
 import PanelAdmin from '../components/PanelAdmin';
-import { addProject, getProjects, deleteProject, updateProject } from '../data/db';
+import { addProject, getProjects, deleteProject, updateProject, syncProjectsFromApi } from '../data/db';
 
 const Admin = () => {
   const estadoInicial = { code: '', name: '', startDate: '', status: 'PLANIFICADO', progress: 0, estimatedCost: '' };
@@ -14,12 +14,19 @@ const Admin = () => {
   const [modoEdicion, setModoEdicion] = useState(false);
   const [idEdicion, setIdEdicion] = useState(null);
 
+  useEffect(() => {
+    const actualizar = () => setListaProyectos([...getProjects()]);
+    window.addEventListener('projectsUpdated', actualizar);
+    syncProjectsFromApi();
+    return () => window.removeEventListener('projectsUpdated', actualizar);
+  }, []);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); 
 
     const codigo = formData.code.trim().toUpperCase();
@@ -28,18 +35,18 @@ const Admin = () => {
       return;
     }
     if (listaProyectos.some((p) => p.code === codigo && p.id !== idEdicion)) {
-      setError(`Ya existe un proyecto con el código ${codigo}.`);
+      setError(`Ya existe un proyecto con el codigo ${codigo}.`);
       return;
     }
     setError(null);
     const datos = { ...formData, code: codigo, name: formData.name.trim(), progress: Number(formData.progress) };
 
     if (modoEdicion) {
-      updateProject(idEdicion, datos);
-      setMensaje(`Proyecto actualizado con exito.`);
+      await updateProject(idEdicion, datos);
+      setMensaje('Proyecto actualizado con exito.');
     } else {
-      addProject(datos);
-      setMensaje(`Proyecto agregado con exito.`);
+      await addProject(datos);
+      setMensaje('Proyecto agregado con exito.');
     }
 
     setFormData(estadoInicial);
@@ -50,9 +57,9 @@ const Admin = () => {
     setTimeout(() => setMensaje(null), 3000);
   };
 
-  const handleDelete = (id) => {
-    if(window.confirm("¿Seguro que deseas eliminar este proyecto?")) {
-      deleteProject(id);
+  const handleDelete = async (id) => {
+    if (window.confirm('Seguro que deseas eliminar este proyecto?')) {
+      await deleteProject(id);
       if (id === idEdicion) cancelarEdicion();
       setListaProyectos([...getProjects()]);
     }
@@ -81,8 +88,8 @@ const Admin = () => {
 
   return (
     <PaginaRol
-      titulo="Panel de Administración"
-      subtitulo="Reportes consolidado de avance y gestión financiera de proyectos"
+      titulo="Panel de Administracion"
+      subtitulo="Reportes consolidado de avance y gestion financiera de proyectos"
     >
       <div className="tarjeta-panel shadow-sm mb-4">
         <div className="tarjeta-panel-encabezado">
